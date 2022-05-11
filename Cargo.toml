@@ -17,6 +17,7 @@ shakmaty = "0.21.1"
 getrandom = { version = "0.2.6", features = ["js"] }
 rand = { version = "0.8.5", features = ["small_rng"] }
 web-sys = { version = "0.3.57", features = ["console"] }
+instant = { version = "0.1", features = [ "wasm-bindgen" ] }
 
 # The `console_error_panic_hook` crate provides better debugging of panics by
 # logging them with `console.error`. This is great for development, but requires

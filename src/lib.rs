@@ -63,6 +63,11 @@ pub fn negamax_a_b_quiescent(fen_str: &str, seed: u64, depth: u64) -> String {
     return algorithms::negamax_a_b_quiescent::root(fen_str, seed, depth)
 }
 
+#[wasm_bindgen]
+pub fn iterative_deepening(fen_str: &str, seed: u64, max_time:u64) -> String {
+    return algorithms::iterative_deepening::root(fen_str, seed, max_time)
+}
+
 /* #[wasm_bindgen]
 pub fn give() -> JsValue {
     let mut hashtable = HashTable::new();
