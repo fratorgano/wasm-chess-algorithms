@@ -37,7 +37,7 @@ pub fn root(fen_str: &str, seed: u64, depth: u64, table: Option<HashTable>) -> M
       let table_entry = table.find(&new_fen, depth);
       /* let string = format!("[Rust-negamax_a_b_table] Entry: {}", if table_entry.is_none() { "None" } else { "Some" });
       web_sys::console::log_1(&string.into()); */
-
+      // useless
       let score = if table_entry.is_some() {
         table_entry.unwrap().score
       } else {
@@ -122,7 +122,7 @@ mod test {
   fn test_exec_time() {
     use std::time::Instant;
     let now = Instant::now();
-    println!("[negamax_a_b] {:?}",root("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 0, 7, None).mov);
+    println!("[negamax_a_b] {:?}",root("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 0, 5, None).mov);
     let elapsed = now.elapsed();
     println!("[negamax_a_b] Elapsed: {:.2?}", elapsed);
   }

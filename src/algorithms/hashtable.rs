@@ -25,9 +25,6 @@ impl HashTable {
       table: HashMap::new(),
     }
   }
-  pub fn insert(&mut self, fen_str: &str, pos_info: PositionInfo) -> Option<PositionInfo> {
-    self.table.insert(zobrish(fen_str).to_string(), pos_info)
-  }
   pub fn find(&mut self, fen_str: &str, depth: u64) -> Option<PositionInfo> {
     let pos_info = self.table.get(&zobrish(fen_str).to_string());
     if pos_info.is_some() {
@@ -37,6 +34,18 @@ impl HashTable {
       }
     }
     return None;
+  }
+  pub fn insert(&mut self, fen_str: &str, pos_info: PositionInfo) -> Option<PositionInfo> {
+    let previous = self.table.get(&zobrish(fen_str).to_string());
+    if previous.is_some() {
+      let previous = previous.unwrap();
+      if previous.depth > pos_info.depth {
+        // println!("Not inserting {:?}", pos_info);
+        return None;
+      }
+    }
+    self.table.insert(zobrish(fen_str).to_string(), pos_info)
+    //self.table.insert(zobrish(fen_str).to_string(), pos_info)
   }
 }
 
