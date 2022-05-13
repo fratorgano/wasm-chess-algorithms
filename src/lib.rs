@@ -1,6 +1,7 @@
 mod utils;
 mod algorithms;
 mod evaluate;
+mod ordering;
 
 use wasm_bindgen::prelude::*;
 use crate::algorithms::hashtable::{HashTable};
@@ -66,6 +67,11 @@ pub fn negamax_a_b_quiescent(fen_str: &str, seed: u64, depth: u64) -> String {
 #[wasm_bindgen]
 pub fn iterative_deepening(fen_str: &str, seed: u64, max_time:u64) -> String {
     return algorithms::iterative_deepening::root(fen_str, seed, max_time)
+}
+
+#[wasm_bindgen]
+pub fn iterative_deepening_order(fen_str: &str, seed: u64, max_time:u64) -> String {
+    return algorithms::iterative_deepening_order::root(fen_str, seed, max_time)
 }
 
 /* #[wasm_bindgen]

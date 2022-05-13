@@ -7,6 +7,7 @@ use shakmaty::*;
 use rand::{Rng, SeedableRng};
 use rand::rngs::SmallRng;
 use instant::Instant;
+use crate::ordering;
 
 use crate::evaluate;
 
@@ -36,7 +37,7 @@ pub fn root(fen_str: &str, seed: u64, max_time: u64) -> String {
         if a==&last_best_move && b!=&last_best_move {
           std::cmp::Ordering::Less
         }else {
-          std::cmp::Ordering::Greater
+          ordering::move_ordering(a,b)
         }
       });
       /* println!("{:?}", legals[0]);
@@ -117,7 +118,7 @@ fn iterative_deepening(fen_str: &str, seed:u64, depth:u64, mut alpha:i64, beta:i
       if a==last_best_move && b!=last_best_move {
         std::cmp::Ordering::Less 
       }else {
-        std::cmp::Ordering::Greater
+        ordering::move_ordering(a,b)
       }
     });
   }
