@@ -16,6 +16,7 @@ I developed a website to play chess online that uses this package and it's avail
 
 ## Commands
 `wasm-pack build --target nodejs --out-dir path-to-node-modules-folder` - Compile rust code and create node.js module based on it
+
 `cargo test` - Compile rust code and test it
 
 ## Dependencies/Modules Used
