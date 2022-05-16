@@ -70,6 +70,12 @@ pub fn iterative_deepening(fen_str: &str, seed: u64, max_time:u64) -> String {
 }
 
 #[wasm_bindgen]
+pub fn iterative_deepening_table(fen_str: &str, seed: u64, max_time:u64) -> String {
+    let move_table = algorithms::iterative_deepening_table::root(fen_str, seed, max_time, None);
+    return move_table.mov
+}
+
+#[wasm_bindgen]
 pub fn iterative_deepening_order(fen_str: &str, seed: u64, max_time:u64) -> String {
     return algorithms::iterative_deepening_order::root(fen_str, seed, max_time)
 }
