@@ -24,7 +24,7 @@ pub fn root(fen_str: &str, seed: u64, max_time: u64, table: Option<HashTable>) -
   let mut depth = 0;
   let mut table = table.unwrap_or_else(|| HashTable::new());
 
-  while start.elapsed().as_millis() < max_time.into() {
+  while start.elapsed().as_millis() < max_time.into() || best_moves.len()==0 {
     alpha = -1_000_000;
     beta = 1_000_000;
     best_moves = new_best_moves.clone();
