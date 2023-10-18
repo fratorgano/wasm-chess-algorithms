@@ -20,10 +20,11 @@ pub fn root(fen_str: &str, seed: u64, depth: u64) -> String {
       let new_fen = fen::Fen::from_position(new_pos.unwrap(), EnPassantMode::Legal).to_string();
       let score = -negamax_a_b(new_fen.as_str(), seed, depth - 1, -beta, -alpha);
       // println!("{:?} -> {:?}", san::San::from_move(&pos,&legal).to_string(), score);
-      if score >= beta {
+      if score > beta {
         return san::San::from_move(&pos,&legal).to_string();
-      }
-      if score > alpha {
+      } else if score == beta {
+        best_moves.push(legal);
+      } else if score > alpha {
         alpha = score;
         best_moves = vec![legal];
       }

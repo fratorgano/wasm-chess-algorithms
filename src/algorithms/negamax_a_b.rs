@@ -5,6 +5,9 @@ use shakmaty::*;//{fen::Fen, Board,Piece,Square, CastlingMode, Chess, Position, 
 use rand::{Rng, SeedableRng};
 use rand::rngs::SmallRng;
 
+use web_sys::console;
+use wasm_bindgen::JsValue;
+
 use crate::evaluate;
 
 pub fn negamax_a_b_root(fen_str: &str, seed: u64, depth: u64) -> String {
@@ -20,10 +23,11 @@ pub fn negamax_a_b_root(fen_str: &str, seed: u64, depth: u64) -> String {
       let new_fen = fen::Fen::from_position(new_pos.unwrap(), EnPassantMode::Legal).to_string();
       let score = -negamax_a_b(new_fen.as_str(), seed, depth - 1, -beta, -alpha);
       // println!("{:?} -> {:?}", san::San::from_move(&pos,&legal).to_string(), score);
-      if score >= beta {
+      if score > beta {
         return san::San::from_move(&pos,&legal).to_string();
-      }
-      if score > alpha {
+      } else if score == beta {
+        best_moves.push(legal);
+      } else if score > alpha {
         alpha = score;
         best_moves = vec![legal];
       }
@@ -31,6 +35,11 @@ pub fn negamax_a_b_root(fen_str: &str, seed: u64, depth: u64) -> String {
   }
   let mut rng = SmallRng::seed_from_u64(seed);
   let move_index = rng.gen_range(0..best_moves.len());
+  println!("{:?}=>{:?}",best_moves.len(),move_index);
+  let move_index_js: JsValue = move_index.into();
+  console::log_2(&"Seed: ".into(), &seed.into());
+  console::log_2(&"Best moves: ".into(), &best_moves.len().into());
+  console::log_2(&"Move index: ".into(), &move_index_js);
   let san_move = san::San::from_move(&pos, &best_moves[move_index]);
   return san_move.to_string();
 

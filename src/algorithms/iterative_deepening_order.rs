@@ -100,7 +100,7 @@ fn iterative_deepening(fen_str: &str, seed:u64, depth:u64, mut alpha:i64, beta:i
   if depth == 0 {
     // instead of just returning the score, we call quiescent search
     // return Some(evaluate::evaluate(fen_str));
-    return Some((quiescent_search(fen_str, alpha, beta), vec![]));
+    return Some((quiescent_search(fen_str, alpha, beta, max_time*5, start), vec![]));
   }
   let fen: fen::Fen = fen_str.parse().unwrap();
   let pos: Chess = fen.into_position(CastlingMode::Standard).unwrap();
@@ -158,9 +158,13 @@ fn iterative_deepening(fen_str: &str, seed:u64, depth:u64, mut alpha:i64, beta:i
   // best_score.unwrap_or(evaluate::evaluate(fen_str))
 }
 
-pub fn quiescent_search(fen_str: &str, mut alpha:i64, beta:i64) -> i64 {
+pub fn quiescent_search(fen_str: &str, mut alpha:i64, beta:i64, max_time:u64, start:Instant) -> i64 {
   // https://www.chessprogramming.org/Quiescence_Search
   let stand_pat = evaluate::evaluate(fen_str);
+  if start.elapsed().as_millis() > max_time.into() {
+    // if we've reached the max time, return beta
+    return beta;
+  }
   if stand_pat >= beta {
     return beta;
   }
@@ -176,7 +180,7 @@ pub fn quiescent_search(fen_str: &str, mut alpha:i64, beta:i64) -> i64 {
     let new_pos = pos.clone().play(&capture);
     if new_pos.is_ok() {
       let new_fen = fen::Fen::from_position(new_pos.unwrap(), EnPassantMode::Legal).to_string();
-      let score = -quiescent_search(new_fen.as_str(), -beta, -alpha);
+      let score = -quiescent_search(new_fen.as_str(), -beta, -alpha, max_time, start);
       if score >= beta {
         return beta;
       }
